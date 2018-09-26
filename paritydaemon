@@ -1,0 +1,36 @@
+#!/bin/bash
+ ###############################################################################
+# Author: Dipen Joshi (dhru_7777@yahoo.com)
+# Description: This script auto restarts parity eth cleint by monitoring its
+# process ID. If its not running it'll try to start it by running
+# ~/parity/run script file in detatched screen session which
+# anyone can access using 'screen -r parity' command.
+# Usage: Run this script from a screen session and then exit screens
+# by pressing ctrl + a and ctrl + d. so this script keeps on
+#	running in the background.
+ ###############################################################################
+
+lastLineFail=1
+while true
+do
+	p=$(pidof parity)
+	time=$(date +%R)
+	if test -z "$p";
+	then
+		echo
+		echo -e "\e[31m"$time "Parity is not running,\e[33m Trying to start...""\e[0m"
+		lastLineFail=1
+		cd ~/parity
+		screen -dmS "parity" ./run
+		echo -e "\e[32m"$time "Parity Started Successfully""\e[0m"
+	else
+		if [ $lastLineFail -eq 0 ];
+		then
+			echo -e -n "\e[32m""\e\r"$time "Parity is running smoothly...""\e[0m"
+		else
+			echo -n -e "\e[32m"$time "Parity is running smoothly...""\e[0m"
+		fi
+		lastLineFail=0
+	fi
+	sleep 15s
+don
