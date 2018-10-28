@@ -1,0 +1,14 @@
+[Uint]
+Description=Used to start parity automatically if it crashes for any reas$
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+ExecStart=/usr/local/bin/paritydaemon
+
+[Install]
+WantedBy=multi-user.target
